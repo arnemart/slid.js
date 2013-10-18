@@ -6,7 +6,6 @@
     "slides": "./slides.js"
   },
   "dependencies": {
-    "cardinal": "~0.4.2",
     "execSync": "~1.0.1-pre",
     "keypress": "~0.2.1",
     "robotskirt": "~2.7.1",
