@@ -1,5 +1,3 @@
-~
-
 # Moro med touch
 
 ~
@@ -8,8 +6,18 @@
 
 ~ Arne Martin Aurlien
 @arnemart
+Boost Communications
 
----------
+----
+
+# In the beforetime
+
+--
+- Eneste pekemekanisme var mus
+--
+- `lang=html<a href="#" onClick="doStuff()">...</a>`
+--
+- `lang=javascript mouseDown, mouseMove, mouseUp, mouseOut`
 
 
-# Hva er altså greia
+----
