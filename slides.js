@@ -43,7 +43,11 @@ var wrapInNl = function(text) {
 var renderer = new rs.HtmlRenderer();
 // Code should be highlighted
 renderer.blockcode = function(code, language) {
-    return wrapInNl(highlight(code, language));
+    if (language) {
+        return wrapInNl(highlight(code, language));
+    } else {
+        return wrapInNl(code);
+    }
 };
 renderer.codespan = function(code) {
     var reg = new RegExp('^(lang=([a-z]+) ?)?(.*)$');
@@ -70,10 +74,9 @@ renderer.paragraph = function(text) {
 renderer.list = function(text, type) {
     // This signifies an ordered list for some reason
     if (type % 2 === 1) {
-        var n = 1;
-        text = text.split('\n').slice(0,-1).map(function(line) {
-            return line.replace(/^\*/, (n++) + '.');
-        }).join('\n') + '\n';
+        text = text.split('\n').slice(0,-1).reduce(function(lines, line) {
+            return lines.concat(line.replace(/^\*/, (lines.length + 1) + '.'));
+        }, []).join('\n') + '\n';
     }
     return wrapInNl(text);
 };
