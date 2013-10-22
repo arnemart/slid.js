@@ -1,10 +1,13 @@
 {
-  "name": "tdc2k13-slides",
+  "name": "slid.js",
   "version": "0.0.1",
-  "repository": "https://github.com/arnemart/tdc2k13-slides",
+  "author": "Arne Martin Aurlien <am@aurlien.net>",
+  "description": "A stupid command line slide tool",
+  "repository": "https://github.com/arnemart/slid.js",
   "bin": {
-    "slides": "./slides.js"
+    "slid": "./slid.js"
   },
+  "license": "MIT",
   "dependencies": {
     "execSync": "~1.0.1-pre",
     "keypress": "~0.2.1",
