@@ -50,7 +50,7 @@ renderer.blockcode = function(code, language) {
     }
 };
 renderer.codespan = function(code) {
-    var reg = new RegExp('^(lang=([a-z]+) ?)?(.*)$');
+    var reg = new RegExp('^(lang=(\w+) ?)?(.*)$');
     var parts = reg.exec(code);
     return highlight(parts[3], parts[2]);
 };
