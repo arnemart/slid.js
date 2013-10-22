@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "author": "Arne Martin Aurlien <am@aurlien.net>",
   "description": "A stupid command line slide tool",
-  "repository": "https://github.com/arnemart/slid.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arnemart/slid.js"
+  },
   "bin": {
     "slid": "./slid.js"
   },
@@ -15,3 +18,4 @@
     "ansi-color": "~0.2.1"
   }
 }
+
