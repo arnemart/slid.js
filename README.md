@@ -5,3 +5,25 @@ A super stupid tool for running slides on the command line.
 You need pygments and figlet.
 
 Please don't use this for anything ever and PLEASE don't read the code.
+
+## Usage
+
+    node slid.js mySlides.txt
+
+Some markdown supported. If you try to use markdown that is not supported you are likely to get html output, because of Reasons.
+
+Use `----` to separate slides, and `--` to separate slide content.
+
+A paragraph starting with `~` is centered.
+
+A paragraph containing nothing but `~` is rendered as a couple of newlines.
+
+Guarded code blocks are supported. Code is highlighted with pygments if language is provided.
+
+Inline code spans can be prefixed with programming language like this: `\`lang=javascript alert('hello')\``
+
+Headers are rendered using figlet.
+
+## Settings
+
+There are none. You'll have to modify the code, which is basically a single strand of spaghetti.
