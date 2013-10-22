@@ -112,7 +112,7 @@ var slides = fs.readFileSync(process.argv[2], {encoding: 'UTF-8'}).split(/\n----
     return collectedSlides;
 }, []);
 
-// Guess what this method does
+// Guess what this function does (read the function name for a hint)
 var clearScreen = function() {
     process.stdout.write('\u001B[2J\u001B[0;0f');
 };
