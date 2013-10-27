@@ -1,6 +1,6 @@
 {
   "name": "slid.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Arne Martin Aurlien <am@aurlien.net>",
   "description": "A stupid command line slide tool",
   "repository": {
