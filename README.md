@@ -2,15 +2,17 @@
 
 A super stupid tool for running slides on the command line.
 
+It’s on NPM. Just do `npm install slid.js`, add `-g` if you are a true masochist.
+
 You need pygments and figlet.
 
 Please don't use this for anything ever and PLEASE don't read the code.
 
 ## Usage
 
-    node slid.js mySlides.txt
+    slid mySlides.txt
 
-Some markdown supported. If you try to use markdown that is not supported you are likely to get html output, because of Reasons.
+Some markdown supported, plus there’s some special syntax. If you try to use markdown that is not supported you are likely to get html output, because of Reasons.
 
 Use `----` to separate slides, and `--` to separate slide content.
 
