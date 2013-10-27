@@ -100,7 +100,7 @@ renderer.blockquote = function() {
 
 // Yeah those extensions
 var parser = new rs.Markdown(renderer, [rs.EXT_FENCED_CODE, rs.EXT_NO_INTRA_EMPHASIS]);
-console.log(renderer);process.exit();
+//console.log(renderer);process.exit();
 
 // Load slides from the provided argument
 // Error handling is for losers
