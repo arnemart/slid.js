@@ -26,6 +26,8 @@ Inline code spans can be prefixed with programming language like this: &#96;`lan
 
 Headers are rendered using figlet.
 
+Blockquotes are not shown. This is handy for printing out slide content with added comments.
+
 ## Settings
 
 There are none. You'll have to modify the code, which is basically a single strand of spaghetti.

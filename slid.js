@@ -50,7 +50,7 @@ renderer.blockcode = function(code, language) {
     }
 };
 renderer.codespan = function(code) {
-    var reg = new RegExp('^(lang=(\w+) ?)?(.*)$');
+    var reg = new RegExp('^(lang=(\\w+) ?)?(.*)$');
     var parts = reg.exec(code);
     return highlight(parts[3], parts[2]);
 };
@@ -93,10 +93,14 @@ renderer.double_emphasis = function(text) {
 renderer.triple_emphasis = function(text) {
     return color(text, 'bold+green+underline');
 };
+// Hide blockquotes altogether. Use for adding comments.
+renderer.blockquote = function() {
+    return '';
+};
 
 // Yeah those extensions
 var parser = new rs.Markdown(renderer, [rs.EXT_FENCED_CODE, rs.EXT_NO_INTRA_EMPHASIS]);
-//console.log(renderer);process.exit();
+console.log(renderer);process.exit();
 
 // Load slides from the provided argument
 // Error handling is for losers
