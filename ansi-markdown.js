@@ -25,8 +25,13 @@ var renderer = new marked.Renderer();
 renderer.br = function() {
     return '\n';
 };
+// Highlighting is handled further down.
 renderer.code = function(code) {
     return wrapInNl(wrapInNl(code));
+};
+// This only handles un-highlighted code spans.
+renderer.codespan = function(code) {
+    return color(code, 'blue');
 };
 renderer.hr = function() {
     return wrapInNl(color((new Array(process.stdout.columns + 1)).join('-'), 'blue') + '\n');
@@ -78,8 +83,9 @@ marked.setOptions({
 var inlineCodeRegex = /(`+)\s*(lang=(\w+)\s+)?([\s\S]*?[^`])\s*\1(?!`)/g;
 
 module.exports.render = function(content, callback) {
+    // We need to do some work on the lexed tokens before generating the final output
     async.map(marked.lexer(content), function(token, cb) {
-        // Inline tokens are not exposed through the lexer, so we do this the hard way
+        // Inline tokens are not exposed through the lexer, so we do highlighted code spans the hard way
         if (token.type === 'paragraph' || token.type === 'text') {
             if (token.text.match(inlineCodeRegex)) {
                 asyncReplace(token.text, inlineCodeRegex, function() {
@@ -100,7 +106,7 @@ module.exports.render = function(content, callback) {
             } else {
                 cb(null, token);
             }
-        } else if (token.type === 'code' || token.type === 'codespan') {
+        } else if (token.type === 'code') {
             token.escaped = true;
             if (token.lang) {
                 pygmentize({ lang: token.lang, format: '256', options: { bg: 'dark', style: 'monokai' } }, token.text, function(err, result) {
@@ -112,6 +118,7 @@ module.exports.render = function(content, callback) {
             } else {
                 cb(null, token);
             }
+        // Need to do figleting of headers here because async
         } else if (token.type === 'heading') {
             token.escaped = true;
             figlet(token.text, function(err, result) {
@@ -122,9 +129,11 @@ module.exports.render = function(content, callback) {
             cb(null, token);
         }
     }, function(err, tokens) {
+        // This is needed for some reason
         if (!tokens.links) {
             tokens.links = {};
         }
+        // Finally parse and make sure html entities are decoded
         callback(ent.decode(marked.parser(tokens)));
     });
 };
