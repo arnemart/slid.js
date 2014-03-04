@@ -12,15 +12,17 @@ var markdown = require('./ansi-markdown');
 // Error handling is for people who make errors
 // A line consisting of four or more dashes separates slides
 // A line consisting of two slashes separates slide content
-var rawSlides = fs.readFileSync(process.argv[2], {encoding: 'UTF-8'}).split(/\n----\n/).reduce(function(collectedSlides, str) {
-    str = str.trim();
-    str.split('\n--\n').reduce(function(a, b) {
-        var currentSlide = a + '\n' + b;
-        collectedSlides.push(currentSlide);
-        return currentSlide;
-    }, '');
-    return collectedSlides;
-}, []);
+var rawSlides = fs.readFileSync(process.argv[2], { encoding: 'UTF-8' })
+    .split(/\n----\n/)
+    .reduce(function(collectedSlides, str) {
+        str = str.trim();
+        str.split('\n--\n').reduce(function(a, b) {
+            var currentSlide = a + '\n' + b;
+            collectedSlides.push(currentSlide);
+            return currentSlide;
+        }, '');
+        return collectedSlides;
+    }, []);
 
 async.map(rawSlides, function(rawSlide, callback) {
     markdown.render(rawSlide, function(data) {
@@ -46,19 +48,13 @@ async.map(rawSlides, function(rawSlide, callback) {
 
     // Show next slide
     var next = function() {
-        currentSlide++;
-        if (currentSlide > slides.length - 1) {
-            currentSlide = slides.length - 1;
-        }
+        currentSlide = Math.min(currentSlide + 1, slides.length - 1);
         renderSlide(currentSlide);
     };
 
     // Show previous slide
     var prev = function() {
-        currentSlide--;
-        if (currentSlide < 0) {
-            currentSlide = 0;
-        }
+        currentSlide = Math.max(currentSlide - 1, 0);
         renderSlide(currentSlide);
     };
 
