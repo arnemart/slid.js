@@ -12,10 +12,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "execSync": "~1.0.1-pre",
     "keypress": "~0.2.1",
-    "robotskirt": "~2.7.1",
-    "ansi-color": "~0.2.1"
+    "ansi-color": "~0.2.1",
+    "figlet": "~1.0.8",
+    "marked": "~0.3.1",
+    "async": "~0.2.10",
+    "pygmentize-bundled": "~2.1.0",
+    "ent": "~0.1.0",
+    "async-replace": "0.0.2"
   }
 }
-
