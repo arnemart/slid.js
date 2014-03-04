@@ -1,0 +1,75 @@
+# Large header
+
+~
+
+~
+
+~
+
+~ A centered paragraph, a bit further down the page
+
+> This will not be rendered
+> Useful for comments
+
+----
+
+# Slide number two
+
+------
+
+--
+- A list item
+--
+- Another list item with _emphasised_ text
+--
+- And another list item with **more emphasised** text
+--
+- And another, with ***even more emphasised*** text!
+--
+- This list item has code: `lang=javascript var a = b(1, 2);`
+--
+- This one has code that isn't highlighted: `echo $stuff;` (that's php)
+
+----
+
+# Slide three: Yay ascii art!
+
+         _____________
+        /  _________  \
+        | |         | |
+        | |         | |
+        | |         | |
+        | |         | |
+        | |         | |
+        | |         | |
+        | |         | |
+        | |         | |
+        | |_________| |
+        |     (o)     |
+        \_____________/
+
+--
+
+(It's a smartphone)
+
+----
+
+# Slide four, with a large code block
+
+```javascript
+// Load slides from the provided argument
+// Error handling is for people who make errors
+// A line consisting of four or more dashes separates slides
+// A line consisting of two slashes separates slide content
+var rawSlides = fs.readFileSync(process.argv[2], { encoding: 'UTF-8' })
+    .split(/\n----\n/)
+    .reduce(function(collectedSlides, str) {
+        str = str.trim();
+        str.split('\n--\n').reduce(function(a, b) {
+            var currentSlide = a + '\n' + b;
+            collectedSlides.push(currentSlide);
+            return currentSlide;
+        }, '');
+        return collectedSlides;
+    }, []);
+```
