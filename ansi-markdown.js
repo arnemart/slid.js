@@ -29,10 +29,6 @@ renderer.br = function() {
 renderer.code = function(code) {
     return wrapInNl(wrapInNl(code));
 };
-// This only handles un-highlighted code spans.
-renderer.codespan = function(code) {
-    return color(code, 'blue');
-};
 renderer.hr = function() {
     return wrapInNl(color((new Array(process.stdout.columns + 1)).join('-'), 'blue') + '\n');
 };
@@ -82,6 +78,20 @@ marked.setOptions({
 
 var inlineCodeRegex = /(`+)\s*(lang=(\w+)\s+)?([\s\S]*?[^`])\s*\1(?!`)/g;
 
+function doThePygmentsThing(code, lang, callback) {
+    if (lang) {
+        pygmentize({ lang: lang, format: '256', options: { style: 'monokai' } }, code, function(err, result) {
+            if (err) {
+                callback(color(code, 'blue'));
+            } else {
+                callback(result.toString().trim());
+            }
+        });
+    } else {
+        callback(color(code, 'blue'));
+    }
+}
+
 module.exports.render = function(content, callback) {
     // We need to do some work on the lexed tokens before generating the final output
     async.map(marked.lexer(content), function(token, cb) {
@@ -92,13 +102,9 @@ module.exports.render = function(content, callback) {
                     var lang = arguments[3];
                     var code = arguments[4];
                     var done = arguments[7];
-                    if (lang) {
-                        pygmentize({ lang: lang, format: '256', options: { bg: 'dark', style: 'monokai' } }, code, function(err, result) {
-                            done(err, result.toString().trim());
-                        });
-                    } else {
-                        done(null, arguments[0]);
-                    }
+                    doThePygmentsThing(code, lang, function(result) {
+                        done(null, result);
+                    });
                 }, function(err, result) {
                     token.text = result;
                     cb(null, token);
@@ -108,16 +114,10 @@ module.exports.render = function(content, callback) {
             }
         } else if (token.type === 'code') {
             token.escaped = true;
-            if (token.lang) {
-                pygmentize({ lang: token.lang, format: '256', options: { bg: 'dark', style: 'monokai' } }, token.text, function(err, result) {
-                    if (!err) {
-                        token.text = result;
-                    }
-                    cb(null, token);
-                });
-            } else {
+            doThePygmentsThing(token.text, token.lang, function(result) {
+                token.text = result;
                 cb(null, token);
-            }
+            });
         // Need to do figleting of headers here because async
         } else if (token.type === 'heading') {
             token.escaped = true;
