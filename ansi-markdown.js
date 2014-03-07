@@ -9,7 +9,7 @@ var ent = require('ent');
 // Center some text on the screen
 var center = function(text) {
     return text.split('\n').map(function(line) {
-        return (new Array(Math.floor((process.stdout.columns - line.length) / 2) + 1)).join(' ') + line;
+        return (new Array(Math.floor((process.stdout.columns - line.replace(/\033\[[0-9;]*m/g, '').length) / 2) + 1)).join(' ') + line;
     }).join('\n');
 };
 
