@@ -10,8 +10,8 @@ var markdown = require('./ansi-markdown');
 
 // Load slides from the provided argument
 // Error handling is for people who make errors
-// A line consisting of four or more dashes separates slides
-// A line consisting of two slashes separates slide content
+// A line consisting of exactly four dashes separates slides
+// A line consisting of exactly two slashes separates slide content
 var rawSlides = fs.readFileSync(process.argv[2], { encoding: 'UTF-8' })
     .split(/\n----\n/)
     .reduce(function(collectedSlides, str) {
@@ -30,33 +30,33 @@ async.map(rawSlides, function(rawSlide, callback) {
     });
 }, function(err, slides) {
     // Guess what this function does (read the function name for a hint)
-    var clearScreen = function() {
+    function clearScreen() {
         process.stdout.write('\u001B[2J\u001B[0;0f');
-    };
+    }
 
     // Keep track of where we are in the slide deck
     var currentSlide = 0;
 
     // Render a slide with a specific number
-    var renderSlide = function(n) {
+    function renderSlide(n) {
         if (slides[n]) {
             var slide = slides[n];
             clearScreen();
             process.stdout.write(slide);
         }
-    };
+    }
 
     // Show next slide
-    var next = function() {
+    function next() {
         currentSlide = Math.min(currentSlide + 1, slides.length - 1);
         renderSlide(currentSlide);
-    };
+    }
 
     // Show previous slide
-    var prev = function() {
+    function prev() {
         currentSlide = Math.max(currentSlide - 1, 0);
         renderSlide(currentSlide);
-    };
+    }
 
     // Make process.stdin respond to keyboard events
     keypress(process.stdin);
@@ -76,7 +76,6 @@ async.map(rawSlides, function(rawSlide, callback) {
     // Let's go
     renderSlide(currentSlide);
 
-    // Let's listen for those keyboard events
     process.stdin.setRawMode(true);
     process.stdin.resume();
 });
