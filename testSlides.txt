@@ -73,3 +73,9 @@ var rawSlides = fs.readFileSync(process.argv[2], { encoding: 'UTF-8' })
         return collectedSlides;
     }, []);
 ```
+
+----
+
+# Slide five with an image
+
+![30](test.png)
