@@ -4,6 +4,7 @@
 // Let's show some slides
 
 var fs = require('fs');
+var exec= require('child_process').exec;
 var keypress = require('keypress');
 var async = require('async');
 var markdown = require('./ansi-markdown');
@@ -13,20 +14,20 @@ var markdown = require('./ansi-markdown');
 // A line consisting of exactly four dashes separates slides
 // A line consisting of exactly two slashes separates slide content
 var rawSlides = fs.readFileSync(process.argv[2], { encoding: 'UTF-8' })
-    .split(/\n----\n/)
-    .reduce(function(collectedSlides, str) {
-        str = str.trim();
-        str.split('\n--\n').reduce(function(a, b) {
-            var currentSlide = a + '\n' + b;
-            collectedSlides.push(currentSlide);
-            return currentSlide;
-        }, '');
-        return collectedSlides;
-    }, []);
+        .split(/\n----\n/)
+        .reduce(function(collectedSlides, str) {
+            str = str.trim();
+            str.split('\n--\n').reduce(function(a, b) {
+                var currentSlide = stripExecCode(a) + '\n' + b;
+                collectedSlides.push(currentSlide);
+                return currentSlide;
+            }, '');
+            return collectedSlides;
+        }, []);
 
 async.map(rawSlides, function(rawSlide, callback) {
-    markdown.render(rawSlide, function(data) {
-        callback(null, data);
+    markdown.render(rawSlide, function(data, codeToRun) {
+        callback(null, [data, codeToRun]);
     });
 }, function(err, slides) {
     // Guess what this function does (read the function name for a hint)
@@ -40,22 +41,30 @@ async.map(rawSlides, function(rawSlide, callback) {
     // Render a slide with a specific number
     function renderSlide(n) {
         if (slides[n]) {
-            var slide = slides[n];
+            var slide = slides[n][0];
+            var code = slides[n][1];
             clearScreen();
             process.stdout.write(slide);
+            code.forEach(function(c) {
+                exec(c);
+            });
         }
     }
 
     // Show next slide
     function next() {
-        currentSlide = Math.min(currentSlide + 1, slides.length - 1);
-        renderSlide(currentSlide);
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            renderSlide(currentSlide);
+        }
     }
 
     // Show previous slide
     function prev() {
-        currentSlide = Math.max(currentSlide - 1, 0);
-        renderSlide(currentSlide);
+        if (currentSlide > 0) {
+            currentSlide = currentSlide - 1;
+            renderSlide(currentSlide);
+        }
     }
 
     // Make process.stdin respond to keyboard events
@@ -79,3 +88,15 @@ async.map(rawSlides, function(rawSlide, callback) {
     process.stdin.setRawMode(true);
     process.stdin.resume();
 });
+
+function stripExecCode(str) {
+    var a = /^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/m.exec(str + '\n');
+    console.log(str, a);
+    return str.replace(/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/m, function(match, _, lang) {
+        if (lang === '#!') {
+            return '';
+        } else {
+            return match;
+        }
+    });
+}

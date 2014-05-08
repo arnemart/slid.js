@@ -35,7 +35,11 @@ renderer.br = function() {
 
 // Highlighting is handled further down.
 renderer.code = function(code) {
-    return wrapInNl(wrapInNl(code));
+    if (code === '') {
+        return '';
+    } else {
+        return wrapInNl(wrapInNl(code));
+    }
 };
 
 renderer.hr = function() {
@@ -140,6 +144,7 @@ function doThePygmentsThing(code, lang, callback) {
 }
 
 module.exports.render = function(content, callback) {
+    var codeToRun = [];
     // We need to do some work on the lexed tokens before generating the final output
     async.map(marked.lexer(content), function(token, tokenCallback) {
         // console.log(token);
@@ -159,10 +164,17 @@ module.exports.render = function(content, callback) {
             }
         } else if (token.type === 'code') {
             token.escaped = true;
-            doThePygmentsThing(token.text, token.lang, function(result) {
-                token.text = result;
+            // Hashbanged code should be executed
+            if (token.lang === '#!') {
+                codeToRun.push(token.text);
+                token.text = '';
                 tokenCallback(null, token);
-            });
+            } else {
+                doThePygmentsThing(token.text, token.lang, function(result) {
+                    token.text = result;
+                    tokenCallback(null, token);
+                });
+            }
         } else if (token.type === 'heading') {
             // Need to do figleting of headers here because async
             token.escaped = true;
@@ -180,7 +192,7 @@ module.exports.render = function(content, callback) {
         }
         // Finally parse, insert images, and make sure html entities are decoded
         insertImages(marked.parser(tokens), function(err, src) {
-            callback(ent.decode(src));
+            callback(ent.decode(src), codeToRun);
         });
     });
 };
