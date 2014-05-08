@@ -7,6 +7,7 @@ var pygmentize = require('pygmentize-bundled');
 var asyncReplace = require('async-replace');
 var ent = require('ent');
 var pictureTube = require('picture-tube');
+var wrap = require('wordwrap').hard;
 
 // Center some text on the screen
 var center = function(text) {
@@ -48,6 +49,7 @@ renderer.heading = function(text, level, raw) {
 
 // Special handling for paragraphs
 renderer.paragraph = function(text) {
+    text = wrap(process.stdout.columns)(text);
     // Just a tilde means a couple of blank lines
     if (text === '~') {
         return '\n\n';
@@ -97,7 +99,7 @@ function insertImages(text, callback) {
             img += data.toString();
         });
         tube.on('end', function() {
-            done(null, img);
+            done(null, center(img));
         });
         fs.createReadStream(href).pipe(tube);
     }, callback);
