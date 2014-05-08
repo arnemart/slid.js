@@ -147,7 +147,6 @@ module.exports.render = function(content, callback) {
     var codeToRun = [];
     // We need to do some work on the lexed tokens before generating the final output
     async.map(marked.lexer(content), function(token, tokenCallback) {
-        // console.log(token);
         // Inline tokens are not exposed through the lexer, so we do highlighted code spans the hard way
         if (token.type === 'paragraph' || token.type === 'text') {
             if (token.text.match(inlineCodeRegex)) {

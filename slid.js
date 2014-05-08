@@ -90,8 +90,6 @@ async.map(rawSlides, function(rawSlide, callback) {
 });
 
 function stripExecCode(str) {
-    var a = /^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/m.exec(str + '\n');
-    console.log(str, a);
     return str.replace(/^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/m, function(match, _, lang) {
         if (lang === '#!') {
             return '';
