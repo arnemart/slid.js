@@ -18,7 +18,7 @@
     "marked": "~0.3.1",
     "async": "~0.2.10",
     "pygmentize-bundled": "~2.1.0",
-    "ent": "~0.1.0",
+    "he": "~0.4.1",
     "async-replace": "~0.0.2",
     "picture-tube": "~0.0.4",
     "wordwrap": "0.0.2"
