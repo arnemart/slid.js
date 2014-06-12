@@ -26,6 +26,10 @@ Headers are rendered using figlet.
 
 Blockquotes (lines prefixed with `>`) are not shown. This is handy for printing out slide content with added comments.
 
+## Executing code
+
+If you add a code snippet and set the language to `#!`, it will not be shown in the slides but executed in the shell in the background. Useful for trigging build jobs/launching editors etc.
+
 ## Settings
 
 There are none. You'll have to modify the code, which is basically a single strand of spaghetti.
