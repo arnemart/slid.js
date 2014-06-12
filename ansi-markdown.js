@@ -5,7 +5,7 @@ var marked = require('marked');
 var async = require('async');
 var pygmentize = require('pygmentize-bundled');
 var asyncReplace = require('async-replace');
-var ent = require('ent');
+var he = require('he');
 var pictureTube = require('picture-tube');
 var wrap = require('wordwrap').hard;
 
@@ -191,7 +191,7 @@ module.exports.render = function(content, callback) {
         }
         // Finally parse, insert images, and make sure html entities are decoded
         insertImages(marked.parser(tokens), function(err, src) {
-            callback(ent.decode(src), codeToRun);
+            callback(he.decode(src), codeToRun);
         });
     });
 };
