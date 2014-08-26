@@ -12,7 +12,7 @@ var wrap = require('wordwrap').hard;
 // Center some text on the screen
 var center = function(text) {
     return text.split('\n').map(function(line) {
-        var spaces = Math.floor((process.stdout.columns - line.replace(/\033\[[0-9;]*m/g, '').length) / 2) + 1;
+        var spaces = Math.floor((process.stdout.columns - he.decode(line).replace(/\033\[[0-9;]*m/g, '').length) / 2) + 1;
         if (spaces < 0) {
             throw new Error('The following is too wide to fit on screen: ' + text);
         }
