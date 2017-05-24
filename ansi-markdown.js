@@ -6,8 +6,9 @@ var async = require('async');
 var pygmentize = require('pygmentize-bundled');
 var asyncReplace = require('async-replace');
 var he = require('he');
-var pictureTube = require('picture-tube');
 var wrap = require('wordwrap').hard;
+var exec = require('child_process').exec;
+
 
 // Center some text on the screen
 var center = function(text) {
@@ -86,27 +87,27 @@ renderer.image = function(href, _, alt) {
 
 // This is horrible, horrible
 function insertImages(text, callback) {
-    var imageRegex = /\<REPLACEWITHIMG\>(.*?)::(.*?)\<\/REPLACEWITHIMG\>/g;
-    // In no way will this come back to bite me the day I need to include Underscore.
-    asyncReplace(text, imageRegex, function(_, alt, href, _, _, done) {
-        var width = parseInt(alt, 10);
-        var tube;
-        if (width !== NaN && width > 0) {
-            tube = pictureTube({
-                cols: width
-            });
-        } else {
-            tube = pictureTube();
-        }
-        var img = '';
-        tube.on('data', function(data) {
-            img += data.toString();
-        });
-        tube.on('end', function() {
-            done(null, center(img));
-        });
-        fs.createReadStream(href).pipe(tube);
-    }, callback);
+  var imageRegex = /\<REPLACEWITHIMG\>(.*?)::(.*?)\<\/REPLACEWITHIMG\>/g;
+  // In no way will this come back to bite me the day I need to include Underscore.
+  asyncReplace(text, imageRegex, function(_, alt, href, _, _, done) {
+    var width = parseInt(alt, 10);
+    var tube;
+    if (width !== NaN && width > 0) {
+      tube = pictureTube({
+        cols: width
+      });
+    } else {
+      tube = pictureTube();
+    }
+    var img = '';
+    tube.on('data', function(data) {
+      img += data.toString();
+    });
+    tube.on('end', function() {
+      done(null, center(img));
+    });
+    fs.createReadStream(href).pipe(tube);
+  }, callback);
 }
 
 // Don't put the emPHASis on the wrong sylLABle
