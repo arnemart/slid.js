@@ -146,6 +146,15 @@ async.map(rawSlides, function(rawSlide, callback) {
 
   });
 
+  if (process.argv[3]) {
+    var num = parseInt(process.argv[3], 10);
+    if (num < 0) {
+      num = slides.length + num;
+    }
+    if (slides[num]) {
+      currentSlide = num;
+    }
+  }
   // Let's go
   renderSlide(currentSlide);
 
