@@ -10,6 +10,7 @@ var async = require('async');
 var marked = require('marked');
 var markdown = require('./ansi-markdown');
 
+var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -96,6 +97,7 @@ async.map(rawSlides, function(rawSlide, callback) {
   var notes = '';
   presenterDisplayRenderer.blockquote = function(text) {
     notes += '<p>' + text.replace(/\n/g, '<br>') + '</p>';
+    return '';
   };
 
   marked.setOptions({
@@ -105,13 +107,7 @@ async.map(rawSlides, function(rawSlide, callback) {
   app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
   });
-  app.get('/:file', function(req, res) {
-    if (fs.existsSync(__dirname + '/' + req.params.file)) {
-      res.sendFile(__dirname + '/' + req.params.file);
-    } else {
-      res.status(404);
-    }
-  });
+  app.use(express.static('.'));
 
   function sendSlide() {
     var current = 'Last slide!';
@@ -150,6 +146,8 @@ async.map(rawSlides, function(rawSlide, callback) {
     var num = parseInt(process.argv[3], 10);
     if (num < 0) {
       num = slides.length + num;
+    } else if (num != 0) {
+      num = num -1;
     }
     if (slides[num]) {
       currentSlide = num;
