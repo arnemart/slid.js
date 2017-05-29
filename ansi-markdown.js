@@ -39,7 +39,7 @@ renderer.code = function(code) {
     if (code === '') {
         return '';
     } else {
-        return wrapInNl(wrapInNl(code));
+        return wrapInNl(code);
     }
 };
 
