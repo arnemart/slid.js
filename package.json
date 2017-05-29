@@ -13,16 +13,16 @@
   "license": "MIT",
   "dependencies": {
     "ansi-color": "~0.2.1",
-    "async": "~0.2.10",
-    "async-replace": "~0.0.2",
+    "async": "~2.4.1",
+    "async-replace": "~1.0.1",
     "express": "^4.15.3",
-    "figlet": "~1.0.8",
-    "he": "~0.4.1",
+    "figlet": "~1.2.0",
+    "he": "~1.1.1",
     "keypress": "~0.2.1",
     "marked": "~0.3.1",
-    "picture-tube": "~0.0.4",
-    "pygmentize-bundled": "~2.1.0",
+    "picture-tube": "~1.0.0",
+    "pygmentize-bundled": "~2.3.0",
     "socket.io": "^2.0.1",
-    "wordwrap": "0.0.2"
+    "wordwrap": "1.0.0"
   }
 }
