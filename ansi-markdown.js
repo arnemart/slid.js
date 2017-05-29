@@ -87,27 +87,25 @@ renderer.image = function(href, _, alt) {
 
 // This is horrible, horrible
 function insertImages(text, callback) {
-  var imageRegex = /\<REPLACEWITHIMG\>(.*?)::(.*?)\<\/REPLACEWITHIMG\>/g;
-  // In no way will this come back to bite me the day I need to include Underscore.
-  asyncReplace(text, imageRegex, function(_, alt, href, _, _, done) {
-    var width = parseInt(alt, 10);
+  var matches = text.match(/\<REPLACEWITHIMG\>(.*?)::(.*?)\<\/REPLACEWITHIMG\>/);
+
+  if (matches) {
+    var width = parseInt(matches[1], 10);
     var tube;
+    var cmd;
     if (width !== NaN && width > 0) {
-      tube = pictureTube({
-        cols: width
-      });
+      cmd = 'node_modules/picture-tube/bin/tube.js --cols ' + width + ' "' + matches[2] + '"';
     } else {
-      tube = pictureTube();
+      cmd = 'node_modules/picture-tube/bin/tube.js "' + matches[2] + '"';
     }
-    var img = '';
-    tube.on('data', function(data) {
-      img += data.toString();
+    exec(cmd, function(_, data) {
+      var img = center(data);
+      text = text.replace(matches[0], img);
+      insertImages(text, callback);
     });
-    tube.on('end', function() {
-      done(null, center(img));
-    });
-    fs.createReadStream(href).pipe(tube);
-  }, callback);
+  } else {
+    callback(null, text);
+  }
 }
 
 // Don't put the emPHASis on the wrong sylLABle
