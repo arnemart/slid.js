@@ -114,10 +114,10 @@ async.map(rawSlides, function(rawSlide, callback) {
     var next = 'Last slide!';
     notes = '';
     if (rawSlides[currentSlide]) {
-      current = marked(rawSlides[currentSlide].replace(/^\s*~\s*/mg, ''));
+      current = marked(rawSlides[currentSlide].replace(/(\n)?~/mg, '$1'));
     }
     if (rawSlides[currentSlide + 1]) {
-      next = marked(rawSlides[currentSlide + 1].replace(/^\s*~\s*/mg, ''));
+      next = marked(rawSlides[currentSlide + 1].replace(/(\n)?~/mg, '$1'));
     }
     io.emit('slide', {
       num: currentSlide + 1,
