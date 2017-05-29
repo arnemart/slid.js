@@ -92,6 +92,7 @@ async.map(rawSlides, function(rawSlide, callback) {
     }
   });
 
+
   // Start http server
   var presenterDisplayRenderer = new marked.Renderer();
   var notes = '';
@@ -113,9 +114,12 @@ async.map(rawSlides, function(rawSlide, callback) {
     var current = 'Last slide!';
     var next = 'Last slide!';
     notes = '';
+    var curNotes = '';
     if (rawSlides[currentSlide]) {
       current = marked(rawSlides[currentSlide].replace(/(\n)?~/mg, '$1'));
     }
+    curNotes = notes;
+    notes = '';
     if (rawSlides[currentSlide + 1]) {
       next = marked(rawSlides[currentSlide + 1].replace(/(\n)?~/mg, '$1'));
     }
@@ -124,18 +128,15 @@ async.map(rawSlides, function(rawSlide, callback) {
       total: slides.length,
       current: current,
       next: next,
-      notes: notes
+      notes: curNotes,
+      nextNotes: notes
     });
   }
 
   io.on('connection', function(socket) {
     sendSlide(socket);
-    socket.on('next', function() {
-      next();
-    });
-    socket.on('prev', function() {
-      prev();
-    });
+    socket.on('next', next);
+    socket.on('prev', prev);
   });
 
   http.listen(3000, function() {

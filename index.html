@@ -7,10 +7,10 @@
       body {
         font-family: sans-serif;
       }
-      #slides {
+      #slides, #notes {
         display: flex;
       }
-      #slides > div {
+      #slides > div, #notes > div {
         flex-basis: 50%;
         margin: 0.5em;
         padding: 1em;
@@ -29,23 +29,29 @@
     <div>
       <span id="curr"></span> / <span id="tot"></span>
     </div>
-    <div id="notes"></div>
+    <div id="notes">
+      <div id="cnotes"></div>
+      <div id="nnotes"></div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
       var slide1 = document.getElementById('slide1');
       var slide2 = document.getElementById('slide2');
-      var notes = document.getElementById('notes');
+      var notes = document.getElementById('cnotes');
+      var nnotes = document.getElementById('nnotes');
       var curr = document.getElementById('curr');
       var tot = document.getElementById('tot');
       socket.on('slide', function(data) {
         slide1.innerHTML = data.current;
         slide2.innerHTML = data.next;
         notes.innerHTML = data.notes;
+        nnotes.innerHTML = data.nextNotes;
         curr.innerHTML = data.num;
         tot.innerHTML = data.total;
       });
       document.addEventListener('keyup', function(e) {
+        console.log(e.which);
         switch(e.which) {
           case 39:
           case 40:
