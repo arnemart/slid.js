@@ -12,15 +12,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "keypress": "~0.2.1",
     "ansi-color": "~0.2.1",
-    "figlet": "~1.0.8",
-    "marked": "~0.3.1",
     "async": "~0.2.10",
-    "pygmentize-bundled": "~2.1.0",
-    "he": "~0.4.1",
     "async-replace": "~0.0.2",
+    "express": "^4.15.3",
+    "figlet": "~1.0.8",
+    "he": "~0.4.1",
+    "keypress": "~0.2.1",
+    "marked": "~0.3.1",
     "picture-tube": "~0.0.4",
+    "pygmentize-bundled": "~2.1.0",
+    "socket.io": "^2.0.1",
     "wordwrap": "0.0.2"
   }
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>untitled</title>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+      }
+      #slides {
+        display: flex;
+      }
+      #slides > div {
+        flex-basis: 50%;
+        margin: 0.5em;
+        padding: 1em;
+        border: 1px solid #ddd;
+      }
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="slides">
+      <div id="slide1"></div>
+      <div id="slide2"></div>
+    </div>
+    <div>
+      <span id="curr"></span> / <span id="tot"></span>
+    </div>
+    <div id="notes"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var slide1 = document.getElementById('slide1');
+      var slide2 = document.getElementById('slide2');
+      var notes = document.getElementById('notes');
+      var curr = document.getElementById('curr');
+      var tot = document.getElementById('tot');
+      socket.on('slide', function(data) {
+        slide1.innerHTML = data.current;
+        slide2.innerHTML = data.next;
+        notes.innerHTML = data.notes;
+        curr.innerHTML = data.num;
+        tot.innerHTML = data.total;
+      });
+      document.addEventListener('keyup', function(e) {
+        switch(e.which) {
+          case 39:
+          case 40:
+            socket.emit('next');
+            break;
+          case 37:
+          case 38:
+            socket.emit('prev');
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
