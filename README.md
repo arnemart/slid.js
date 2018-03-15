@@ -20,7 +20,7 @@ A paragraph containing nothing but `~` is rendered as a couple of newlines.
 
 Guarded code blocks are supported. Code is highlighted with pygments if language is provided.
 
-Inline code spans can be prefixed with programming language like this: `&#96;lang=javascript alert('hello')&#96;`
+Inline code spans can be prefixed with programming language like this: `` `lang=javascript alert('hello')` ``
 
 Headers are rendered using figlet.
 
