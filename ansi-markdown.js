@@ -49,7 +49,7 @@ renderer.hr = function() {
 
 // Headers should be figleted
 renderer.heading = function(text, level, raw) {
-  return '\n\n' + center(raw) + '\n';
+  return '\n\n' + center(figlet.textSync(raw)) + '\n';
 };
 
 // Special handling for paragraphs
@@ -173,13 +173,6 @@ module.exports.render = function(content, callback) {
           tokenCallback(null, token);
         });
       }
-    } else if (token.type === 'heading') {
-      // Need to do figleting of headers here because async
-      token.escaped = true;
-      figlet(token.text, function(err, result) {
-        token.text = result;
-        tokenCallback(null, token);
-      });
     } else {
       tokenCallback(null, token);
     }
